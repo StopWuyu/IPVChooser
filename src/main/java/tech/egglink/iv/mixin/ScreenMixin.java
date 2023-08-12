@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.util.Objects;
 
 @Mixin(MultiplayerScreen.class)
@@ -61,8 +63,17 @@ public abstract class ScreenMixin extends Screen {
         if (this.client != null) {
             LOGGER.info(entry.address);
             ServerAddress addr = ServerAddress.parse(entry.address);
-            ConnectScreen.connect(this, this.client, ServerAddress.parse(Objects.requireNonNull(Utils.resolveAddress(addr.
-                    getAddress(), addr.getPort(), Utils.type)).getAddress().getHostAddress() + ":" + addr.getPort()), entry, false);
+            InetAddress address = Objects.requireNonNull(Utils.resolveAddress(addr.getAddress(), addr.getPort(),
+                    Utils.type)).getAddress();
+            if (address != null) {
+                if (address instanceof Inet6Address) {
+                    ConnectScreen.connect(this, this.client, ServerAddress.parse("[" +
+                            address.getHostAddress() + "]:" + addr.getPort()), entry, false);
+                } else {
+                    ConnectScreen.connect(this, this.client, ServerAddress.parse(address
+                            .getHostAddress() + ":" + addr.getPort()), entry, false);
+                }
+            }
         }
     }
 }
