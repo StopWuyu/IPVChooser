@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "ipvchooser",
+  "version": "${version}",
+  "name": "IPVChooser",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/wuyus/IPVChooser"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/ipvchooser/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "tech.egglink.iv.client.IPVChooserClient"
+    ],
+    "main": [
+      "tech.egglink.iv.IPVChooser"
+    ]
+  },
+  "mixins": [
+    "ipvchooser.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
